@@ -3,6 +3,7 @@ on early-init
 
 on init
     export PATH /sbin
+    export LD_LIBRARY_PATH .:/sbin
     export ANDROID_ROOT /system
     export ANDROID_DATA /data
     export EXTERNAL_STORAGE /sdcard
@@ -14,6 +15,7 @@ on init
     symlink /system/etc /etc
 
     mkdir /sdcard
+    mkdir /external_sd
     mkdir /system
     mkdir /data
     mkdir /cache
@@ -32,6 +34,7 @@ on init
 
 
 on boot
+
     ifup lo
     hostname localhost
     domainname localdomain
