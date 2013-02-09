@@ -61,9 +61,9 @@ PRODUCT_COPY_FILES += \
 
 # Recovery
 PRODUCT_COPY_FILES += \
-    device/allwinner/sun6i-common/recovery/root/keyboard.ko:recovery/keyboard.ko \
-    device/allwinner/sun6i-common/recovery/root/nand.ko:recovery/nand.ko \
-    device/allwinner/sun6i-common/recovery/root/touch.ko:recovery/touch.ko
+    device/allwinner/sun6i-common/recovery/keyboard.ko:recovery/root/keyboard.ko \
+    device/allwinner/sun6i-common/recovery/nand.ko:recovery/root/nand.ko \
+    device/allwinner/sun6i-common/recovery/touch.ko:recovery/root/touch.ko
 
 # Audio/Alsa
 #PRODUCT_COPY_FILES += \

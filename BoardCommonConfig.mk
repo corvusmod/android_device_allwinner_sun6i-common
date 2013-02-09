@@ -28,7 +28,7 @@ TARGET_CPU_ABI2 := armeabi
 TARGET_CPU_SMP := true
 TARGET_ARCH := arm
 TARGET_ARCH_VARIANT := armv7-a-neon
-TARGET_ARCH_VARIANT_CPU := cortex-a7
+#TARGET_ARCH_VARIANT_CPU := cortex-a7
 TARGET_ARCH_VARIANT_FPU := neon
 ARCH_ARM_HAVE_VFP := true
 ARCH_ARM_HAVE_NEON := true
@@ -36,13 +36,12 @@ ARCH_ARM_HAVE_ARMV7A := true
 ARCH_ARM_HAVE_TLS_REGISTER := true
 
 # CFLAGS
-TARGET_GLOBAL_CFLAGS += -mtune=cortex-a7 -mfpu=neon -mfloat-abi=softfp
-TARGET_GLOBAL_CPPFLAGS += -mtune=cortex-a7 -mfpu=neon -mfloat-abi=softfp
+#TARGET_GLOBAL_CFLAGS += -mtune=cortex-a7 -mfpu=neon -mfloat-abi=softfp
+#TARGET_GLOBAL_CPPFLAGS += -mtune=cortex-a7 -mfpu=neon -mfloat-abi=softfp
 
 TARGET_PROVIDES_INIT := true
 TARGET_PROVIDES_INIT_RC := false
 TARGET_PROVIDES_INIT_TARGET_RC := true
-TARGET_RECOVERY_INITRC := device/allwinner/sun6i-common/recovery/init.recovery.rc
 
 # Kernel
 # TARGET_KERNEL_SOURCE := kernel/sunxi
@@ -95,10 +94,32 @@ TARGET_CUSTOM_BLUEDROID := ../../../device/allwinner/sun6i-common/bluetooth/blue
 
 # Recovery
 TARGET_NO_RECOVERY := false
-BOARD_HAS_NO_SELECT_BUTTON := false
+BOARD_HAS_NO_SELECT_BUTTON := true
 BOARD_USES_MMCUTILS := true
 BOARD_HAS_LARGE_FILESYSTEM := true
 BOARD_HAS_NO_MISC_PARTITION := false
+TARGET_RECOVERY_INITRC := device/allwinner/sun6i-common/recovery/init.recovery.rc
+TARGET_RECOVERY_PRE_COMMAND := "setrecovery"
+# Recovery - twrp specific
+DEVICE_RESOLUTION := 1920x1200
+TW_NO_REBOOT_BOOTLOADER := true
+#TW_NO_REBOOT_RECOVERY := true
+RECOVERY_GRAPHICS_USE_LINELENGTH := true
+TARGET_RECOVERY_PIXEL_FORMAT := "RGB_565"
+TW_INTERNAL_STORAGE_PATH := "/sdcard"
+TW_INTERNAL_STORAGE_MOUNT_POINT := "sdcard"
+TW_EXTERNAL_STORAGE_PATH := "/external_sd"
+TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sd"
+SP1_NAME := "bootloader"
+SP1_DISPLAY_NAME := "Bootloader"
+SP1_BACKUP_METHOD := image
+SP1_MOUNTABLE := 0
+SP2_NAME := "env"
+SP2_DISPLAY_NAME := "U-Boot env. variables"
+SP2_BACKUP_METHOD := image
+SP2_MOUNTABLE := 0
+#BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/allwinner/sun6i-common/recovery/recovery_keys.c
+
 
 # inherit from the proprietary version
 -include vendor/allwinner/sun6i-common/BoardConfigVendor.mk
