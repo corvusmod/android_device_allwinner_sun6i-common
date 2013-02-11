@@ -3,7 +3,7 @@
 #include <fcntl.h>
 #include <errno.h>
 
-#define THE_DEVICE "/sys/class/timed_output/sun4i-vibrator/enable"
+#define THE_DEVICE "/sys/class/timed_output/sun6i-vibrator/enable"
 
 int vibrator_exists()
 {
