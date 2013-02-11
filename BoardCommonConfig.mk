@@ -19,6 +19,7 @@ TARGET_BOARD_PLATFORM := sun6i
 
 USE_CAMERA_STUB := false
 BOARD_HAS_SDCARD_INTERNAL := true
+
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
 
@@ -36,8 +37,9 @@ ARCH_ARM_HAVE_ARMV7A := true
 ARCH_ARM_HAVE_TLS_REGISTER := true
 
 # CFLAGS
-#TARGET_GLOBAL_CFLAGS += -mtune=cortex-a7 -mfpu=neon -mfloat-abi=softfp
-#TARGET_GLOBAL_CPPFLAGS += -mtune=cortex-a7 -mfpu=neon -mfloat-abi=softfp
+TARGET_GLOBAL_CFLAGS += -mfpu=neon -mfloat-abi=softfp
+TARGET_GLOBAL_CPPFLAGS += -mfpu=neon -mfloat-abi=softfp
+# -mtune=cortex-a7
 
 TARGET_PROVIDES_INIT := true
 TARGET_PROVIDES_INIT_RC := false
@@ -92,6 +94,9 @@ WIFI_DRIVER_MODULE_NAME          := 8192cu
 BOARD_HAVE_BLUETOOTH := true
 TARGET_CUSTOM_BLUEDROID := ../../../device/allwinner/sun6i-common/bluetooth/bluedroid.c
 
+# Vibrator
+BOARD_HAS_VIBRATOR_IMPLEMENTATION := ../../device/allwinner/sun6i-common/vibrator.c
+
 # Recovery
 TARGET_NO_RECOVERY := false
 BOARD_HAS_NO_SELECT_BUTTON := true
@@ -115,10 +120,10 @@ SP1_DISPLAY_NAME := "Bootloader"
 SP1_BACKUP_METHOD := image
 SP1_MOUNTABLE := 0
 SP2_NAME := "env"
-SP2_DISPLAY_NAME := "U-Boot env. variables"
+SP2_DISPLAY_NAME := "Bootloader env. variables"
 SP2_BACKUP_METHOD := image
 SP2_MOUNTABLE := 0
-#BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/allwinner/sun6i-common/recovery/recovery_keys.c
+BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/allwinner/sun6i-common/recovery/recovery_keys.c
 
 
 # inherit from the proprietary version
