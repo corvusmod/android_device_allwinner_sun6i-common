@@ -11,32 +11,13 @@ on early-init
     mount debugfs debugfs /sys/kernel/debug
     mkdir /databk 0700 root  system
 
+on init
+    insmod /nand.ko
+
 on fs
-    mount ext4 /dev/block/nandd /system wait noatime nodev barrier=0
-# try to mount /data
-    wait /dev/block/nande
-    mount ext4 /dev/block/nande /data wait noatime nosuid nodev barrier=0
-    setupfs /dev/block/nande
-    umount /data
-    exec /system/bin/logwrapper /system/bin/e2fsck -y /dev/block/nande
-    exec /system/bin/busybox mount -t ext4 -o noatime,nosuid,nodev,barrier=0,nodiratime,noauto_da_alloc /dev/block/nande /data
+    mount_all /fstab.sun6i
 
-# try to mount /cache
-    mount ext4 /dev/block/nandh /cache wait noatime nosuid nodev barrier=0
-    setupfs /dev/block/nandh
-    umount /cache
-    exec /system/bin/logwrapper /system/bin/e2fsck -y /dev/block/nandh
-    mount ext4 /dev/block/nandh /cache noatime nosuid nodev barrier=0
-
-    format_userdata /dev/block/nandj novo9-Spark
-
-#try to format /databk
-    wait /dev/block/nandi
-    mount ext4 /dev/block/nandi /databk wait noatime nosuid nodev barrier=0
-    setupfs /dev/block/nandi
-    umount /databk
-    rmdir /databk
-
+on post-fs-data
 # radio related, such as imei.conf
     mkdir /data/misc/radio 0777 system radio
     # radio related, 3G Data Card
@@ -50,8 +31,36 @@ on fs
     chown radio system /system/etc/ppp/ip-down
 
 #insmod img
-    insmod /system/vendor/modules/pvrsrvkm.ko
-    insmod /system/vendor/modules/dc_sunxi.ko
+    insmod /system/lib/modules/pvrsrvkm.ko
+    insmod /system/lib/modules/dc_sunxi.ko
+
+#csi module
+    insmod /system/lib/modules/videobuf-core.ko
+    insmod /system/lib/modules/videobuf-dma-contig.ko
+
+    insmod /system/lib/modules/ov5640.ko
+    insmod /system/lib/modules/hi253.ko
+    insmod /system/lib/modules/sunxi_csi1.ko
+
+#mp
+    insmod /system/lib/modules/g2d_33.ko
+
+#insmod tp and keyboard 
+    insmod /system/lib/modules/gt82x.ko
+    insmod /system/lib/modules/sw-keyboard.ko
+
+# gsensor
+    insmod /system/lib/modules/mma8452.ko
+
+#insmod network
+    insmod /system/lib/modules/usbnet.ko
+    insmod /system/lib/modules/asix.ko
+    insmod /system/lib/modules/qf9700.ko
+    insmod /system/lib/modules/mcs7830.ko
+    insmod /system/lib/modules/rtl8150.ko
+    insmod /system/lib/modules/cdc_ether.ko
+
+on boot
 # change rfkill permissions for bluetooth power management
     chmod 0660 /sys/class/rfkill/rfkill0/state
     chmod 0660 /sys/class/rfkill/rfkill0/type
@@ -60,36 +69,11 @@ on fs
     write /sys/class/rfkill/rfkill0/state 0
     setprop rw.bluetooth.status "0"
 
-#csi module
-    insmod /system/vendor/modules/videobuf-core.ko
-    insmod /system/vendor/modules/videobuf-dma-contig.ko
-
-    insmod /system/vendor/modules/ov5640.ko
-    insmod /system/vendor/modules/hi253.ko
-    insmod /system/vendor/modules/sunxi_csi1.ko
-
-#mp
-    insmod /system/vendor/modules/g2d_33.ko
-
-#insmod tp and keyboard 
-    insmod /system/vendor/modules/gt82x.ko
-    insmod /system/vendor/modules/sw-keyboard.ko
-
+# Vibrator
     chown system system /sys/class/timed_output/sun6i-vibrator/enable
     chmod 666 /sys/class/timed_output/sun6i-vibrator/enable
 
-# gsensor
-    insmod /system/vendor/modules/mma8452.ko
-
-#insmod network
-    insmod /system/vendor/modules/usbnet.ko
-    insmod /system/vendor/modules/asix.ko
-    insmod /system/vendor/modules/qf9700.ko
-    insmod /system/vendor/modules/mcs7830.ko
-    insmod /system/vendor/modules/rtl8150.ko
-    insmod /system/vendor/modules/cdc_ether.ko
-
-service pvrsrvctl /system/vendor/bin/pvrsrvctl --start --no-module
+service pvrsrvctl /system/bin/pvrsrvctl --start --no-module
     class core
     user root
     group root
@@ -105,6 +89,16 @@ service ril-daemon /system/bin/rild -l libsoftwinner-ril.so -- -d /dev/ttyUSB2
 
 service u3gmonitor /system/bin/u3gmonitor
     class main
+    user root
+    group root
+    oneshot
+
+# create filesystems if necessary
+service setup_fs /system/bin/setup_fs \
+        nandd \
+        nande \
+        nandh
+    class core
     user root
     group root
     oneshot

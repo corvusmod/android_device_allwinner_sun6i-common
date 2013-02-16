@@ -34,23 +34,28 @@ PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/prebuilt/firmware/gslX680-sc5009-v99.bin:system/vendor/firmware/gslX680-sc5009-v99.bin
 
 # Hardware-specific features //want to know what's installed by default
-#PRODUCT_COPY_FILES += \
-#    $(COMMON_PATH)/configs/permissions/android.hardware.bluetooth.xml:system/etc/permissions/android.hardware.bluetooth.xml \
-#    $(COMMON_PATH)/configs/permissions/android.hardware.camera.autofocus.xml:system/etc/permissions/android.hardware.camera.autofocus.xml \
-#    $(COMMON_PATH)/configs/permissions/android.hardware.camera.front.xml:system/etc/permissions/android.hardware.camera.front.xml \
-#    $(COMMON_PATH)/configs/permissions/android.hardware.camera.xml:system/etc/permissions/android.hardware.camera.xml \
-#    $(COMMON_PATH)/configs/permissions/android.hardware.ethernet.xml:system/etc/permissions/android.hardware.ethernet.xml \
-#    $(COMMON_PATH)/configs/permissions/android.hardware.faketouch.xml:system/etc/permissions/android.hardware.faketouch.xml \
-#    $(COMMON_PATH)/configs/permissions/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
-#    $(COMMON_PATH)/configs/permissions/android.hardware.location.xml:system/etc/permissions/android.hardware.location.xml \
-#    $(COMMON_PATH)/configs/permissions/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
-#    $(COMMON_PATH)/configs/permissions/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml \
-#    $(COMMON_PATH)/configs/permissions/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
-#    $(COMMON_PATH)/configs/permissions/android.hardware.live_wallpaper.xml:system/etc/permissions/android.hardware.live_wallpaper.xml \
-#    $(COMMON_PATH)/configs/permissions/android.software.pppoe.xml:system/etc/permissions/android.software.pppoe.xml \
-#    $(COMMON_PATH)/configs/permissions/com.google.android.maps.xml:system/etc/permissions/com.google.android.maps.xml \
-#    $(COMMON_PATH)/configs/permissions/platform.xml:system/etc/permissions/android.hardware.platform.xml \
-#     $(COMMON_PATH)/configs/permissions/tablet_core_hardware.xml:system/etc/permissions/tablet_core_hardware.xml
+PRODUCT_COPY_FILES += \
+    $(COMMON_PATH)/configs/permissions/android.hardware.bluetooth.xml:system/etc/permissions/android.hardware.bluetooth.xml \
+    $(COMMON_PATH)/configs/permissions/android.hardware.camera.autofocus.xml:system/etc/permissions/android.hardware.camera.autofocus.xml \
+    $(COMMON_PATH)/configs/permissions/android.hardware.camera.front.xml:system/etc/permissions/android.hardware.camera.front.xml \
+    $(COMMON_PATH)/configs/permissions/android.hardware.camera.xml:system/etc/permissions/android.hardware.camera.xml \
+    $(COMMON_PATH)/configs/permissions/android.hardware.ethernet.xml:system/etc/permissions/android.hardware.ethernet.xml \
+    $(COMMON_PATH)/configs/permissions/android.hardware.faketouch.xml:system/etc/permissions/android.hardware.faketouch.xml \
+    $(COMMON_PATH)/configs/permissions/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
+    $(COMMON_PATH)/configs/permissions/android.hardware.location.xml:system/etc/permissions/android.hardware.location.xml \
+    $(COMMON_PATH)/configs/permissions/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
+    $(COMMON_PATH)/configs/permissions/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml \
+    $(COMMON_PATH)/configs/permissions/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
+    $(COMMON_PATH)/configs/permissions/android.software.live_wallpaper.xml:system/etc/permissions/android.software.live_wallpaper.xml \
+    $(COMMON_PATH)/configs/permissions/android.software.pppoe.xml:system/etc/permissions/android.software.pppoe.xml
+
+# Configs
+PRODUCT_COPY_FILES += \
+    $(COMMON_PATH)/configs/3g_dongle.cfg:system/etc/3g_dongle.cfg \
+    $(COMMON_PATH)/configs/audio_policy.conf:system/etc/audio_policy.conf \
+    $(COMMON_PATH)/configs/camera.cfg:system/etc/camera.cfg \
+    $(COMMON_PATH)/configs/media_codecs.xml:system/etc/media_codecs.xml \
+    $(COMMON_PATH)/configs/media_profiles.xml:system/etc/media_profiles.xml
 
 # WiFi
 PRODUCT_COPY_FILES += \
@@ -60,10 +65,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/configs/vold.fstab:system/etc/vold.fstab
 
-# Audio/Alsa
-#PRODUCT_COPY_FILES += \
-
-# Build extra packages
+# Nand
+PRODUCT_COPY_FILES += \
+    $(COMMON_PATH)/prebuilt/modules/nand.ko:root/nand.ko \
+    $(COMMON_PATH)/prebuilt/modules/nand.ko:recovery/root/nand.ko
 
 # Audio
 #PRODUCT_PACKAGES += \
@@ -109,6 +114,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     wifi.supplicant_scan_interval=15
 
 ADDITIONAL_DEFAULT_PROPERTIES += \
+    ro.display.switch=1 \
+    ro.wifidisplay.switch=0 \
     persist.sys.timezone=Europe/Stockholm \
     ro.allow.mock.location=1 \
     ro.kernel.android.checkjni=1 \
